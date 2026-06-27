@@ -23,6 +23,8 @@
 # misc
 .DS_Store
 *.pem
+.venv
+Backend/.venv
 
 # debug
 npm-debug.log*
@@ -39,3 +41,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/Backend/shop/app/migrations/__pycache__
+/Backend/shop/app/management/__pycache__
+/Backend/shop/app/__pycache__
+/Backend/shop/shop/__pycache__
+/Backend/.venv
+*.cfg
+Backend/.venv/pyvenv.cfg
