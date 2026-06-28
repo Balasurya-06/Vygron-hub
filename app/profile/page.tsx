@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
@@ -67,7 +67,7 @@ type SavedAddress = {
 
 
 
-export default function ProfilePage() {
+function ProfileContent() {
   const [activeTab, setActiveTab] = useState<TabId>("orders");
   const searchParams = useSearchParams();
 
@@ -798,6 +798,14 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense>
+      <ProfileContent />
+    </Suspense>
   );
 }
 
