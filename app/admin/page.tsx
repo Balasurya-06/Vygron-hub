@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Mail, Lock, Eye, EyeOff, ShieldCheck, Globe, Search, Bell, Settings as SettingsIcon, Plus, LayoutDashboard, Package, ShoppingBag, MessageSquare, LogOut, ChevronRight, Store, Users, Wallet, TrendingUp, Menu, X, ArrowLeft } from "lucide-react";
 import {
   apiLogin, apiGet, apiPost, apiPatch, apiDelete,
-  productFromAPI, productToAPI, orderFromAPI, clearToken,
+  productFromAPI, productToAPI, orderFromAPI, clearToken, mediaUrl,
 } from "@/lib/api";
 
 /* ═══════════════════════════ TYPES ═══════════════════════════════ */
@@ -979,7 +979,7 @@ export default function AdminPage() {
                       {form.images.map((src,idx)=>(
                         <div key={idx} className="relative group rounded-xl overflow-hidden flex-shrink-0" style={{width:"80px",height:"88px",border:`2px solid ${idx===0?"var(--primary)":"var(--cream-dark)"}`}}>
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={src} alt={`img-${idx+1}`} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                          <img src={mediaUrl(src)} alt={`img-${idx+1}`} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
                           <button
                             type="button"
                             onClick={e=>{e.stopPropagation();removeImage(idx);}}
@@ -1222,7 +1222,7 @@ export default function AdminPage() {
                   <div key={p.id} className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{background:"#fff",border:`1.5px solid ${p.showOnHome?"var(--primary)":"var(--cream-dark)"}`}}>
                     <div className={`${p.imgClass} w-10 h-11 rounded-lg flex-shrink-0 overflow-hidden flex items-center justify-center`}>
                       {p.images?.[0]
-                        ? <img src={p.images[0]} alt={p.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top"}}/>
+                        ? <img src={mediaUrl(p.images[0])} alt={p.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top"}}/>
                         : <span style={{fontSize:"1.1rem",opacity:0.3}}>🥻</span>
                       }
                     </div>
@@ -1266,7 +1266,7 @@ export default function AdminPage() {
                             <div className="flex items-center gap-3">
                               <div className={`${p.imgClass} w-9 h-10 rounded-lg flex-shrink-0 overflow-hidden flex items-center justify-center`}>
                                 {p.images?.[0]
-                                  ? <img src={p.images[0]} alt={p.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top"}}/>
+                                  ? <img src={mediaUrl(p.images[0])} alt={p.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top"}}/>
                                   : <span style={{fontSize:"1rem",opacity:0.3}}>🥻</span>
                                 }
                               </div>
@@ -1689,7 +1689,7 @@ export default function AdminPage() {
             <div style={{textAlign:"center",marginBottom:"24px"}}>
               <div style={{fontSize:"2.6rem",marginBottom:"14px"}}>📦</div>
               <h3 style={{fontFamily:"var(--font-cormorant,serif)",fontSize:"1.4rem",fontWeight:700,color:"var(--primary)",marginBottom:"8px"}}>Restock Product</h3>
-              <p style={{color:"#666",fontSize:"0.85rem",lineHeight:1.6}}>How many units would you like to add for<br/><strong style={{color:"var(--foreground)"}}>{restockDialog.name}</strong>?</p>
+              <p style={{color:"#666",fontSize:"0.85rem",lineHeight:1.6}}>How many units would you like to add for<br/><strong style={{color:"var(--foreground)"}}>{restockDialog?.name}</strong>?</p>
             </div>
             <div style={{marginBottom:"20px"}}>
               <label style={{display:"block",fontSize:"0.72rem",fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",color:"#aaa",marginBottom:"8px"}}>Units to Add</label>
@@ -1725,22 +1725,22 @@ export default function AdminPage() {
           <div style={{background:"#fff",borderRadius:"20px",padding:"36px 32px",maxWidth:"400px",width:"100%",boxShadow:"0 32px 80px rgba(0,0,0,0.3)"}} onClick={e=>e.stopPropagation()}>
             <div style={{textAlign:"center",marginBottom:"24px"}}>
               <div style={{fontSize:"2.8rem",marginBottom:"14px"}}>
-                {confirmDialog.type==="delete-product"?"🗑️":confirmDialog.type==="cancel-order"?"❌":confirmDialog.type==="out-of-stock"?"📦":"✅"}
+                {confirmDialog?.type==="delete-product"?"🗑️":confirmDialog?.type==="cancel-order"?"❌":confirmDialog?.type==="out-of-stock"?"📦":"✅"}
               </div>
               <h3 style={{fontFamily:"var(--font-cormorant,serif)",fontSize:"1.4rem",fontWeight:700,color:"var(--primary)",marginBottom:"10px"}}>
-                {confirmDialog.type==="delete-product"?"Delete Product?"
-                  :confirmDialog.type==="cancel-order"?"Cancel Order?"
-                  :confirmDialog.type==="out-of-stock"?"Mark as Out of Stock?"
+                {confirmDialog?.type==="delete-product"?"Delete Product?"
+                  :confirmDialog?.type==="cancel-order"?"Cancel Order?"
+                  :confirmDialog?.type==="out-of-stock"?"Mark as Out of Stock?"
                   :"Confirm Status Update"}
               </h3>
               <p style={{color:"#666",fontSize:"0.875rem",lineHeight:1.6}}>
-                {confirmDialog.type==="delete-product"
-                  ?`Are you sure you want to delete "${confirmDialog.label}"? This action cannot be undone.`
-                  :confirmDialog.type==="cancel-order"
-                  ?`Cancel the order for ${confirmDialog.label}? This cannot be reversed.`
-                  :confirmDialog.type==="out-of-stock"
-                  ?`Mark "${confirmDialog.label}" as out of stock? Stock will be set to 0.`
-                  :`Advance order for ${confirmDialog.label} to "${confirmDialog.nextLabel}"?`}
+                {confirmDialog?.type==="delete-product"
+                  ?`Are you sure you want to delete "${confirmDialog?.label}"? This action cannot be undone.`
+                  :confirmDialog?.type==="cancel-order"
+                  ?`Cancel the order for ${confirmDialog?.label}? This cannot be reversed.`
+                  :confirmDialog?.type==="out-of-stock"
+                  ?`Mark "${confirmDialog?.label}" as out of stock? Stock will be set to 0.`
+                  :`Advance order for ${confirmDialog?.label} to "${confirmDialog?.nextLabel}"?`}
               </p>
             </div>
             <div style={{display:"flex",gap:"12px"}}>
@@ -1750,18 +1750,18 @@ export default function AdminPage() {
               >Not now</button>
               <button
                 onClick={()=>{
-                  if(confirmDialog.type==="delete-product") deleteProduct(confirmDialog.id as number);
-                  else if(confirmDialog.type==="cancel-order") cancelOrder(confirmDialog.id as string);
-                  else if(confirmDialog.type==="advance-order") advanceOrder(confirmDialog.id as string);
-                  else if(confirmDialog.type==="out-of-stock") markOutOfStock(confirmDialog.id as number);
+                  if(confirmDialog?.type==="delete-product") deleteProduct(confirmDialog?.id as number);
+                  else if(confirmDialog?.type==="cancel-order") cancelOrder(confirmDialog?.id as string);
+                  else if(confirmDialog?.type==="advance-order") advanceOrder(confirmDialog?.id as string);
+                  else if(confirmDialog?.type==="out-of-stock") markOutOfStock(confirmDialog?.id as number);
                   setConfirmDialog(null);
                 }}
                 style={{flex:1,padding:"13px",borderRadius:"12px",border:"none",cursor:"pointer",fontSize:"0.875rem",fontWeight:600,color:"#fff",fontFamily:"var(--font-jost,sans-serif)",
-                  background:confirmDialog.type==="delete-product"||confirmDialog.type==="cancel-order"?"#dc2626":confirmDialog.type==="out-of-stock"?"#c2410c":"var(--primary)"}}
+                  background:confirmDialog?.type==="delete-product"||confirmDialog?.type==="cancel-order"?"#dc2626":confirmDialog?.type==="out-of-stock"?"#c2410c":"var(--primary)"}}
               >
-                {confirmDialog.type==="delete-product"?"Delete"
-                  :confirmDialog.type==="cancel-order"?"Cancel Order"
-                  :confirmDialog.type==="out-of-stock"?"Mark Out of Stock"
+                {confirmDialog?.type==="delete-product"?"Delete"
+                  :confirmDialog?.type==="cancel-order"?"Cancel Order"
+                  :confirmDialog?.type==="out-of-stock"?"Mark Out of Stock"
                   :"Confirm"}
               </button>
             </div>
